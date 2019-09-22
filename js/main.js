@@ -5,7 +5,6 @@ var LIKES_MAX = 200;
 var AVATAR_MIN = 1;
 var AVATAR_MAX = 6;
 var PICTURE_OBJECTS = 25;
-var ARRAY_URL = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
 var NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 
 var COMMENTS = [
@@ -22,12 +21,18 @@ var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+var getRandomIndex = function (arr) {
+  var minIndex = 0;
+  var maxIndex = arr.length - 1;
+  return arr[getRandomNumber(minIndex, maxIndex)];
+};
+
 // массив коментарий
 var createCommentObject = function () {
   var comment = {
     avatar: 'img/avatar-' + getRandomNumber(AVATAR_MIN, AVATAR_MAX) + '.svg',
-    message: COMMENTS[Math.floor(Math.random() * COMMENTS.length)],
-    name: NAMES[Math.floor(Math.random() * NAMES.length)]
+    message: getRandomIndex(COMMENTS),
+    name: getRandomIndex(NAMES)
   };
   return comment;
 };
@@ -38,13 +43,9 @@ for (var g = 0; g < 6; g++) {
 }
 
 // функция создающая объект
-var createPhotoDescription = function () {
-  for (var j = 0; j < ARRAY_URL.length; j++) {
-    var photoUrl = ARRAY_URL[j];
-  }
-
+var createPhotoDescription = function (photoIndex) {
   var photo = {
-    url: 'hotos/' + photoUrl + '.jpg',
+    url: 'photos/' + photoIndex + '.jpg',
     description: 'описание фотографии.',
     likes: getRandomNumber(LIKES_MIN, LIKES_MAX),
     comments: commentObjects[Math.floor(Math.random() * commentObjects.length)]
@@ -52,30 +53,25 @@ var createPhotoDescription = function () {
   return photo;
 };
 
-// создаю объект
-var photoObjects = [];
-for (var i = 0; i < PICTURE_OBJECTS; i++) {
-  photoObjects.push(createPhotoDescription());
-}
-
-
 // отрисовываю элементы
 var photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 var blockPictures = document.querySelector('.pictures');
 
-var renderPhoto = function () {
+var renderPhoto = function (photo) {
   var element = photoTemplate.cloneNode(true);
-  element.querySelector('.picture__img').src = photoObjects.url;
-  element.querySelector('.picture__likes').textContent = photoObjects.likes;
-  element.querySelector('.picture__comments').textContent = photoObjects.comments;
+  element.querySelector('.picture__img').src = photo.url;
+  element.querySelector('.picture__likes').textContent = photo.likes;
+  element.querySelector('.picture__comments').textContent = photo.comments;
   return element;
 };
 
-var pictures = createPhotoDescription(PICTURE_OBJECTS);
 var fragment = document.createDocumentFragment();
+// создаю объект
+var photoObjects = [];
 
-for (var t = 0; t < pictures.length; t++) {
-  fragment.appendChild(renderPhoto(pictures[t]));
+for (var i = 0; i < PICTURE_OBJECTS; i++) {
+  photoObjects.push(createPhotoDescription(i + 1));
+  fragment.appendChild(renderPhoto(photoObjects[i]));
 }
 
 blockPictures.appendChild(fragment);
