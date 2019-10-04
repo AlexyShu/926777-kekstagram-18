@@ -21,13 +21,14 @@ var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+// функция случайных индексов
 var getRandomIndex = function (arr) {
   var minIndex = 0;
   var maxIndex = arr.length - 1;
   return arr[getRandomNumber(minIndex, maxIndex)];
 };
 
-// массив коментарий
+// функция создающая комментарий
 var createCommentObject = function () {
   var comment = {
     avatar: 'img/avatar-' + getRandomNumber(AVATAR_MIN, AVATAR_MAX) + '.svg',
@@ -37,12 +38,13 @@ var createCommentObject = function () {
   return comment;
 };
 
+// массив комментариев
 var commentObjects = [];
 for (var g = 0; g < 6; g++) {
   commentObjects.push(createCommentObject());
 }
 
-// функция создающая объект
+// функция создающая объект-фотография
 var createPhotoDescription = function (photoIndex) {
   var photo = {
     url: 'photos/' + photoIndex + '.jpg',
@@ -66,7 +68,7 @@ var renderPhoto = function (photo) {
 };
 
 var fragment = document.createDocumentFragment();
-// создаю объект
+// создаю объект-фото
 var photoObjects = [];
 
 for (var i = 0; i < PICTURE_OBJECTS; i++) {
@@ -75,3 +77,122 @@ for (var i = 0; i < PICTURE_OBJECTS; i++) {
 }
 
 blockPictures.appendChild(fragment);
+
+// задание Обработка событий
+
+// задаю переменную для input
+var uploadFileElement = document.querySelector('.img-upload__input');
+// задаю переменную для - Формы редактирования изображения
+var uploadPopupElement = document.querySelector('.img-upload__overlay');
+// задаю переменную для кнопки закрытия формы
+var uploadPopupCloseElement = document.querySelector('.img-upload__cancel');
+// нахожу слайдер
+var sliderPin = document.querySelector('.effect-level__pin');
+
+// функция-обработчик закрытия формы при нажатии esc4
+// к форме добавляю класс hidden
+var closeForm = function () {
+  uploadPopupElement.classList.add('hidden');
+  document.removeEventListener('keydown', onFormEscPress);
+};
+
+// функция открытия формы
+var openForm = function () {
+  uploadPopupElement.classList.remove('hidden');
+  document.addEventListener('keydown', onFormEscPress);
+}
+
+uploadFileElement.addEventListener('change', function () {
+  openForm();
+});
+
+// закрытие формы при нажатие на esc
+var onFormEscPress = function (evt) {
+  if (evt.keyCode === 27) {
+    closeForm();
+  }
+};
+
+// закрытие формы по клику
+uploadPopupCloseElement.addEventListener('click', function () {
+  closeForm();
+});
+
+// Слайдер для фильтра
+// пин слайдера
+var effectLevelPinHandler = document.querySelector('.effect-level__pin');
+// input Изменение глубины эффекта, накладываемого на изображение
+var effectLevelValue = document.querySelector('.effect-level__value');
+
+effectLevelPinHandler.addEventListener('mouseup', function () {
+  // добавим на пин слайдера .effect-level__pin обработчик события mouseup, который будет согласно ТЗ изменять уровень насыщенности фильтра для изображения
+});
+
+// Выбор фильтра для фото
+var imageUploadPreview = document.querySelector('.img-upload__preview img'); //CSS-стили картинки
+var effectsRadioArray = document.querySelectorAll('.effects__radio'); // input наложение эффекта на изображение
+
+effectsRadioArray[0].addEventListener('click', function () {
+});
+
+effectsRadioArray.forEach(function (element) { // выполняет указанную функцию один раз для каждого элемента в массиве
+  element.addEventListener('click', function (evt) {
+    imageUploadPreview.className = '';
+    imageUploadPreview.classList.add('effects__preview--' + evt.target.value);
+  });
+});
+
+// Валидация Хештегов
+var errorMessage = {
+  HASHTAG_SIMBOL: 'Хэш-тег начинается с символа # (решётка)',
+  HASHTAG_ONLY_SIMBOL: 'Хеш-тег не может состоять только из одной решётки;',
+  HASHTAG_SPACES: 'Хэш-теги разделяются пробелами',
+  HASHTAG_REPEAT: 'Один и тот же хэш-тег не может быть использован дважды',
+  HASHTAG_TOO_MUCH: 'Нельзя указать больше пяти хэш-тегов',
+  HASHTAG_TOO_LONG: 'Максимальная длина одного хэш-тега 20 символов, включая решётку',
+  HASHTAGS_SUCCESS: 'Успех'
+};
+
+var textLimitations = {
+  MAX_LENGTH: 20,
+  MIN_LENGTH: 1,
+  MAX_AMOUNT: 5
+};
+
+var textHashtagsInput = document.querySelector('.text__hashtags'); // input в разделе - Добавление хэш-тегов и комментария к изображению
+
+var hashtagValidity = function (target, value) {
+  var hashtagsArray = value.split(' ');
+  var textError = '';
+
+  for (var i = 0; i < hashtagsArray.lenght; i++) {
+    var hashtag = hashtagsArray[i];
+
+    if (hashtag[0] !== '#') {
+      textError = errorMessage.HASHTAG_SIMBOL;
+      break;
+    } else if (hashtag.length > textLimitations.MAX_LENGTH) {
+      textError = errorMessage.HASHTAG_TOO_LONG;
+      break;
+    } else if (hashtagsArray.length > textLimitations.MAX_AMOUNT) {
+      textError = errorMessage.HASHTAG_TOO_MUCH;
+      break;
+    } else if (hashtag.length === textLimitations.MIN_LENGTH) {
+      textError = errorMessage.HASHTAG_ONLY_SIMBOL;
+      break;
+    } else if (hashtag.indexOf(hashtag) !== i) {
+      textError = errorMessage.HASHTAG_REPEAT;
+      break;
+    }
+    textError = errorMessage.HASHTAGS_SUCCESS;
+  }
+  target.setCustomValidity(textError);
+};
+
+textHashtagsInput.addEventListener('input', function (evt) {
+  var hashtags = textHashtagsInput.value.trim().toLowerCase();
+  var target = evt.target;
+
+  hashtagValidity(target, hashtags);
+});
+
