@@ -86,8 +86,6 @@ var uploadFileElement = document.querySelector('.img-upload__input');
 var uploadPopupElement = document.querySelector('.img-upload__overlay');
 // задаю переменную для кнопки закрытия формы
 var uploadPopupCloseElement = document.querySelector('.img-upload__cancel');
-// нахожу слайдер
-var sliderPin = document.querySelector('.effect-level__pin');
 
 // функция-обработчик закрытия формы при нажатии esc4
 // к форме добавляю класс hidden
@@ -100,7 +98,7 @@ var closeForm = function () {
 var openForm = function () {
   uploadPopupElement.classList.remove('hidden');
   document.addEventListener('keydown', onFormEscPress);
-}
+};
 
 uploadFileElement.addEventListener('change', function () {
   openForm();
@@ -121,15 +119,13 @@ uploadPopupCloseElement.addEventListener('click', function () {
 // Слайдер для фильтра
 // пин слайдера
 var effectLevelPinHandler = document.querySelector('.effect-level__pin');
-// input Изменение глубины эффекта, накладываемого на изображение
-var effectLevelValue = document.querySelector('.effect-level__value');
 
 effectLevelPinHandler.addEventListener('mouseup', function () {
   // добавим на пин слайдера .effect-level__pin обработчик события mouseup, который будет согласно ТЗ изменять уровень насыщенности фильтра для изображения
 });
 
 // Выбор фильтра для фото
-var imageUploadPreview = document.querySelector('.img-upload__preview img'); //CSS-стили картинки
+var imageUploadPreview = document.querySelector('.img-upload__preview img'); // CSS-стили картинки
 var effectsRadioArray = document.querySelectorAll('.effects__radio'); // input наложение эффекта на изображение
 
 effectsRadioArray[0].addEventListener('click', function () {
@@ -165,8 +161,8 @@ var hashtagValidity = function (target, value) {
   var hashtagsArray = value.split(' ');
   var textError = '';
 
-  for (var i = 0; i < hashtagsArray.lenght; i++) {
-    var hashtag = hashtagsArray[i];
+  for (var k = 0; k < hashtagsArray.lenght; k++) {
+    var hashtag = hashtagsArray[k];
 
     if (hashtag[0] !== '#') {
       textError = errorMessage.HASHTAG_SIMBOL;
