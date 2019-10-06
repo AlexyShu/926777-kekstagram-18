@@ -10,21 +10,17 @@
   pinHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
+      x: evt.clientX
     };
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+        x: startCoords.x - moveEvt.clientX
       };
       startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
+        x: moveEvt.clientX
       };
-      pinHandle.style.top = (pinHandle.offsetTop - shift.y) + 'px';
       pinHandle.style.left = (pinHandle.offsetLeft - shift.x) + 'px';
     };
 

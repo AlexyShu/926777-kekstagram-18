@@ -61,7 +61,7 @@
     var hashtagsArray = value.split(' ');
     var textError = 'Ok';
 
-    for (var i = 0; i < hashtagsArray; i++) {
+    for (var i = 0; i < hashtagsArray.length; i++) {
       var hashtag = hashtagsArray[i];
 
       if (hashtag[0] !== '#') {
