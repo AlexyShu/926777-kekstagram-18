@@ -3,11 +3,37 @@
 (function () {
   // Слайдер для фильтра
   // пин слайдера
-  var effectLevelPinHandler = document.querySelector('.effect-level__pin');
+  var pinHandle = document.querySelector('.effect-level__pin');
 
-  effectLevelPinHandler.addEventListener('mouseup', function () {
-  // добавим на пин слайдера .effect-level__pin обработчик события mouseup, который будет согласно ТЗ изменять уровень насыщенности фильтра для изображения
-  });
+  // передвижение пина
+  pinHandle.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+      document.style.top = (document.offsetTop - shift.y) + 'px';
+      document.style.left = (document.offsetLeft - shift.x) + 'px';
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
 
   // Выбор фильтра для фото
   var imageUploadPreview = document.querySelector('.img-upload__preview img'); // CSS-стили картинки
