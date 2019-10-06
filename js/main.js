@@ -138,6 +138,41 @@ effectsRadioArray.forEach(function (element) { // выполняет указа�
   });
 });
 
+
+// Масштаб фотографии
+var scaleControlValue = document.querySelector('.scale__control--value');
+var scaleControlSmaller = document.querySelector('.scale__control--smaller');
+var scaleControlBigger = document.querySelector('.scale__control--bigger');
+var STEP = 25; // Значение должно изменяться с шагом 25
+var MAX_VALUE = '100%';
+var MIN_VALUE = '25%';
+scaleControlValue.value = MAX_VALUE;
+imageUploadPreview.style.transform = 'scale(1)';
+
+var onDoSmaller = function () {
+  var valueInPercentSmaller = parseInt(scaleControlValue.value, 10);
+  if (scaleControlValue.value === MIN_VALUE) {
+    return scaleControlValue.value;
+  }
+  scaleControlValue.value = valueInPercentSmaller - STEP + '%';
+  imageUploadPreview.style.transform = 'scale(' + parseInt(scaleControlValue.value, 10) / 100 + ')';
+  return scaleControlValue.value;
+};
+
+var onDoBigger = function () {
+  var valueInPercentBigger = parseInt(scaleControlValue.value, 10);
+  if (scaleControlValue.value === MAX_VALUE) {
+    return scaleControlValue.value;
+  }
+  scaleControlValue.value = valueInPercentBigger + STEP + '%';
+  imageUploadPreview.style.transform = 'scale(' + parseInt(scaleControlValue.value, 10) / 100 + ')';
+  return scaleControlValue.value;
+};
+
+scaleControlSmaller.addEventListener('click', onDoSmaller);
+scaleControlBigger.addEventListener('click', onDoBigger);
+
+
 // Валидация Хештегов
 var errorMessage = {
   HASHTAG_SIMBOL: 'Хэш-тег начинается с символа # (решётка)',
@@ -146,7 +181,7 @@ var errorMessage = {
   HASHTAG_REPEAT: 'Один и тот же хэш-тег не может быть использован дважды',
   HASHTAG_TOO_MUCH: 'Нельзя указать больше пяти хэш-тегов',
   HASHTAG_TOO_LONG: 'Максимальная длина одного хэш-тега 20 символов, включая решётку',
-  HASHTAGS_SUCCESS: 'Успех'
+  HASHTAGS_SUCCESS: 'Ok!'
 };
 
 var textLimitations = {
@@ -159,9 +194,9 @@ var textHashtagsInput = document.querySelector('.text__hashtags'); // input в �
 
 var hashtagValidity = function (target, value) {
   var hashtagsArray = value.split(' ');
-  var textError = '';
+  var textError = 'Неверное значение';
 
-  for (var k = 0; k < hashtagsArray.lenght; k++) {
+  for (var k = 0; k < hashtagsArray; k++) {
     var hashtag = hashtagsArray[k];
 
     if (hashtag[0] !== '#') {
