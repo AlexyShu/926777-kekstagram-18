@@ -4,6 +4,7 @@
   // Слайдер для фильтра
   // пин слайдера
   var pinHandle = document.querySelector('.effect-level__pin');
+  // var effectLine = document.querySelector('.effect-level__line');
 
   // передвижение пина
   pinHandle.addEventListener('mousedown', function (evt) {
@@ -23,8 +24,8 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-      document.style.top = (document.offsetTop - shift.y) + 'px';
-      document.style.left = (document.offsetLeft - shift.x) + 'px';
+      pinHandle.style.top = (pinHandle.offsetTop - shift.y) + 'px';
+      pinHandle.style.left = (pinHandle.offsetLeft - shift.x) + 'px';
     };
 
     var onMouseUp = function (upEvt) {
