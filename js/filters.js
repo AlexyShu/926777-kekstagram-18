@@ -32,8 +32,10 @@
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
+
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+  });
 
   // Выбор фильтра для фото
   var imageUploadPreview = document.querySelector('.img-upload__preview img'); // CSS-стили картинки
