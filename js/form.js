@@ -16,7 +16,6 @@
     HASHTAG_REPEAT: 'Один и тот же хэш-тег не может быть использован дважды',
     HASHTAG_TOO_MUCH: 'Нельзя указать больше пяти хэш-тегов',
     HASHTAG_TOO_LONG: 'Максимальная длина одного хэш-тега 20 символов, включая решётку',
-    HASHTAGS_SUCCESS: 'Ok!'
   };
 
   var textLimitations = {
@@ -58,29 +57,28 @@
   var textHashtagsInput = document.querySelector('.text__hashtags'); // input в разделе - Добавление хэш-тегов и комментария к изображению
 
   var hashtagValidity = function (target, value) {
-    var hashtagsArray = value.split(' ');
-    var textError = 'Ok';
-
-    for (var i = 0; i < hashtagsArray.length; i++) {
-      var hashtag = hashtagsArray[i];
-
+    var hashtagsArray = value.toLowerCase().split(' ');
+    var textError = '';
+    var validTagsCount = 0;
+    while (hashtagsArray.length) {
+      var hashtag = hashtagsArray.splice(0, 1)[0];
       if (hashtag[0] !== '#') {
         textError = errorMessage.HASHTAG_SIMBOL;
         break;
       } else if (hashtag.length > textLimitations.MAX_LENGTH) {
         textError = errorMessage.HASHTAG_TOO_LONG;
         break;
-      } else if (hashtagsArray.length > textLimitations.MAX_AMOUNT) {
-        textError = errorMessage.HASHTAG_TOO_MUCH;
-        break;
       } else if (hashtag.length === textLimitations.MIN_LENGTH) {
         textError = errorMessage.HASHTAG_ONLY_SIMBOL;
         break;
-      } else if (hashtag.indexOf(hashtag) !== i) {
+      } else if (hashtagsArray.indexOf(hashtag) > -1) {
         textError = errorMessage.HASHTAG_REPEAT;
         break;
       }
-      textError = errorMessage.HASHTAGS_SUCCESS;
+      validTagsCount++;
+    }
+    if (validTagsCount > textLimitations.MAX_AMOUNT) {
+      textError = textError = errorMessage.HASHTAG_TOO_MUCH;
     }
     target.setCustomValidity(textError);
   };

@@ -53,32 +53,31 @@
   var scaleControlSmaller = document.querySelector('.scale__control--smaller');
   var scaleControlBigger = document.querySelector('.scale__control--bigger');
   var STEP = 25; // Значение должно изменяться с шагом 25
-  var MAX_VALUE = '100%';
-  var MIN_VALUE = '25%';
-  scaleControlValue.value = MAX_VALUE;
-  imageUploadPreview.style.transform = 'scale(1)';
+  var MAX_VALUE = 100;
+  var MIN_VALUE = 25;
+  scaleControlValue.value = MAX_VALUE + '%';
 
-  var onDoSmaller = function () {
-    var valueInPercentSmaller = parseInt(scaleControlValue.value, 10);
-    if (scaleControlValue.value === MIN_VALUE) {
-      return scaleControlValue.value;
-    }
-    scaleControlValue.value = valueInPercentSmaller - STEP + '%';
-    imageUploadPreview.style.transform = 'scale(' + parseInt(scaleControlValue.value, 10) / 100 + ')';
-    return scaleControlValue.value;
+  var setImageScale = function (scale) {
+    imageUploadPreview.style.transform = 'scale(' + scale / 100 + ')';
   };
 
-  var onDoBigger = function () {
-    var valueInPercentBigger = parseInt(scaleControlValue.value, 10);
-    if (scaleControlValue.value === MAX_VALUE) {
-      return scaleControlValue.value;
+  setImageScale(MAX_VALUE);
+
+  var onClickScale = function (vector) {
+    var value = parseInt(scaleControlValue.value, 10);
+    var futureValue = value + vector * STEP;
+    if (futureValue >= MIN_VALUE && futureValue <= MAX_VALUE) {
+      scaleControlValue.value = futureValue + '%';
+      setImageScale(futureValue);
     }
-    scaleControlValue.value = valueInPercentBigger + STEP + '%';
-    imageUploadPreview.style.transform = 'scale(' + parseInt(scaleControlValue.value, 10) / 100 + ')';
-    return scaleControlValue.value;
   };
 
-  scaleControlSmaller.addEventListener('click', onDoSmaller);
-  scaleControlBigger.addEventListener('click', onDoBigger);
+  scaleControlSmaller.addEventListener('click', function () {
+    onClickScale(-1);
+  });
+
+  scaleControlBigger.addEventListener('click', function () {
+    onClickScale(1);
+  });
 
 })();
