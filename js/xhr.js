@@ -19,20 +19,6 @@
   errorPopupButtons.removeChild(errorPopupButtons.children[1]);
   errorPopupTryAgainBtn.addEventListener('click', onTryAgainBtnClick);
 
-
-  // функция случайных лайков и аватарок
-  var getRandomNumber = function (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  // функция случайных индексов
-  var getRandomIndex = function (arr) {
-    var minIndex = 0;
-    var maxIndex = arr.length - 1;
-    return arr[getRandomNumber(minIndex, maxIndex)];
-  };
-
-
   var xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
 
