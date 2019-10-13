@@ -1,6 +1,6 @@
 'use strict';
 
-// модуль photo-objects
+/* // модуль photo-objects
 (function () {
   var LIKES_MIN = 15;
   var LIKES_MAX = 200;
@@ -79,4 +79,5 @@
   }
 
   blockPictures.appendChild(fragment);
-})();
+})(); */
+
