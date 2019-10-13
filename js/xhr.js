@@ -46,7 +46,7 @@
           var element = photoTemplate.cloneNode(true);
           element.querySelector('.picture__img').src = photo.url;
           element.querySelector('.picture__likes').textContent = photo.likes;
-          element.querySelector('.picture__comments').textContent = getRandomIndex(photo.comments);
+          element.querySelector('.picture__comments').textContent = photo.comments.length;
           fragment.appendChild(element);
         }
         blockPictures.appendChild(fragment);
