@@ -12,6 +12,14 @@
   var errorPopupButtons = errorPopup.querySelector('.error__buttons');
   var errorPopupTryAgainBtn = errorPopupButtons.children[0];
 
+  // фильтр фото
+  var imgFilters = document.querySelector('.img-filters');
+  var filterRandomPhotos = document.querySelector('#filter-random');
+  var filterDiscussedPhotos = document.querySelector('#filter-discussed');
+  var filterPopularPhotos = document.querySelector('#filter-popular');
+
+  imgFilters.classList.remove('img-filters--inactive');
+
   function onTryAgainBtnClick() {
     window.location.reload();
   }
@@ -26,6 +34,13 @@
     switch (xhr.status) {
       case 200:
         var photos = xhr.response;
+
+        photos.sort(function (a, b) {
+          return b.likes - a.likes;
+        });
+
+        window.photos = photos;
+
         var fragment = document.createDocumentFragment();
         for (var i = 0; i < photos.length; i++) {
           var photo = photos[i];
@@ -36,6 +51,7 @@
           fragment.appendChild(element);
         }
         blockPictures.appendChild(fragment);
+
         break;
       case 300:
         errorPopupTitle.textContent = 'Ошибка: Запрос был перенаправлен сервером.';
@@ -54,10 +70,29 @@
   xhr.addEventListener('timeout', function () {
     errorPopupTitle.textContent = 'Запрос не успел выполниться за ' + xhr.timeout + 'мс';
   });
+  xhr.addEventListener('error', function () {
+    errorPopupTitle.textContent = 'Произошла ошибка соединения';
+  });
 
   xhr.timeout = 10000; // 10s
   xhr.open('GET', URL);
   xhr.send();
 
-})();
+  // фильтр фото
+  var getRandomNumber = function (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+  // функция случайных индексов
+  var getRandomIndex = function (arr) {
+    var minIndex = 0;
+    var maxIndex = arr.length - 1;
+    return arr[getRandomNumber(minIndex, maxIndex)];
+  };
 
+  filterRandomPhotos.addEventListener('click', function () {
+    var photosSort = window.photos.slice().sort(getRandomIndex);
+    console.log(photosSort)
+    return photosSort.slice(0, 10);
+  });
+
+})();
