@@ -99,31 +99,25 @@
     window.debounce(function () {
       var randomPhotos = shuffle(window.photos);
       renderPhotos(randomPhotos.slice(0, 10));
-    });
+    })();
   });
 
   filterPopularPhotos.addEventListener('click', function () {
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = window.setTimeout(function () {
+    window.debounce(function () {
       window.photos.sort(function (a, b) {
         return b.likes - a.likes;
       });
       renderPhotos(window.photos);
-    }, 500);
+    })();
   });
 
   filterDiscussedPhotos.addEventListener('click', function () {
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = window.setTimeout(function () {
+    window.debounce(function () {
       window.photos.sort(function (a, b) {
         return b.comments.length - a.comments.length;
       });
       renderPhotos(window.photos);
-    }, 500);
+    })();
   });
 
 })();

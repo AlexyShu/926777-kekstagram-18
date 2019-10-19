@@ -3,15 +3,14 @@
   var DEBOUNCE_INTERVAL = 500; // ms
 
   window.debounce = function (cb) {
-    var lastTimeout = null;
-
     return function () {
       var parameters = arguments;
-      if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
+      if (window.lastTimeout) {
+        window.clearTimeout(window.lastTimeout);
       }
-      lastTimeout = window.setTimeout(function() {
+      window.lastTimeout = window.setTimeout(function () {
         cb.apply(null, parameters);
+        window.lastTimeout = null;
       }, DEBOUNCE_INTERVAL);
     };
   };
