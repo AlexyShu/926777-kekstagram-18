@@ -3,8 +3,7 @@
 (function () {
 
   var URL = 'https://js.dump.academy/kekstagram/data';
-  var photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
-  var blockPictures = document.querySelector('.pictures');
+  var lastTimeout;
   // Блок: Сообщение с ошибкой загрузки изображения
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorPopup = errorTemplate.cloneNode(true);
@@ -30,28 +29,34 @@
   var xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
 
+  var renderPhotos = function (photos) {
+    var picturesBlock = document.querySelector('.pictures');
+    var photosTemplate = document.querySelector('#picture').content.querySelector('.picture');
+    var photosCurrent = picturesBlock.querySelectorAll('.picture');
+    for (var j = 0; j < photosCurrent.length; j++) {
+      picturesBlock.removeChild(photosCurrent[j]);
+    }
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < photos.length; i++) {
+      var photo = photos[i];
+      var element = photosTemplate.cloneNode(true);
+      element.querySelector('.picture__img').src = photo.url;
+      element.querySelector('.picture__likes').textContent = photo.likes;
+      element.querySelector('.picture__comments').textContent = photo.comments.length;
+      fragment.appendChild(element);
+    }
+    picturesBlock.appendChild(fragment);
+  };
+
   xhr.addEventListener('load', function () {
     switch (xhr.status) {
       case 200:
         var photos = xhr.response;
-
         photos.sort(function (a, b) {
           return b.likes - a.likes;
         });
-
         window.photos = photos;
-
-        var fragment = document.createDocumentFragment();
-        for (var i = 0; i < photos.length; i++) {
-          var photo = photos[i];
-          var element = photoTemplate.cloneNode(true);
-          element.querySelector('.picture__img').src = photo.url;
-          element.querySelector('.picture__likes').textContent = photo.likes;
-          element.querySelector('.picture__comments').textContent = photo.comments.length;
-          fragment.appendChild(element);
-        }
-        blockPictures.appendChild(fragment);
-
+        renderPhotos(photos);
         break;
       case 300:
         errorPopupTitle.textContent = 'Ошибка: Запрос был перенаправлен сервером.';
@@ -78,21 +83,47 @@
   xhr.open('GET', URL);
   xhr.send();
 
-  // фильтр фото
-  var getRandomNumber = function (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-  // функция случайных индексов
-  var getRandomIndex = function (arr) {
-    var minIndex = 0;
-    var maxIndex = arr.length - 1;
-    return arr[getRandomNumber(minIndex, maxIndex)];
-  };
+  // функция "взболтать массив"
+  function shuffle(photos) {
+    var j; var x; var i;
+    for (i = photos.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = photos[i];
+      photos[i] = photos[j];
+      photos[j] = x;
+    }
+    return photos;
+  }
 
   filterRandomPhotos.addEventListener('click', function () {
-    var photosSort = window.photos.slice().sort(getRandomIndex);
-    console.log(photosSort)
-    return photosSort.slice(0, 10);
+    window.debounce(function () {
+      var randomPhotos = shuffle(window.photos);
+      renderPhotos(randomPhotos.slice(0, 10));
+    });
+  });
+
+  filterPopularPhotos.addEventListener('click', function () {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(function () {
+      window.photos.sort(function (a, b) {
+        return b.likes - a.likes;
+      });
+      renderPhotos(window.photos);
+    }, 500);
+  });
+
+  filterDiscussedPhotos.addEventListener('click', function () {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(function () {
+      window.photos.sort(function (a, b) {
+        return b.comments.length - a.comments.length;
+      });
+      renderPhotos(window.photos);
+    }, 500);
   });
 
 })();
