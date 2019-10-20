@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var URL = 'https://js.dump.academy/kekstagram/data';
   // Блок: Сообщение с ошибкой загрузки изображения
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -28,25 +27,6 @@
   var xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
 
-  var renderPhotos = function (photos) {
-    var picturesBlock = document.querySelector('.pictures');
-    var photosTemplate = document.querySelector('#picture').content.querySelector('.picture');
-    var photosCurrent = picturesBlock.querySelectorAll('.picture');
-    for (var j = 0; j < photosCurrent.length; j++) {
-      picturesBlock.removeChild(photosCurrent[j]);
-    }
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < photos.length; i++) {
-      var photo = photos[i];
-      var element = photosTemplate.cloneNode(true);
-      element.querySelector('.picture__img').src = photo.url;
-      element.querySelector('.picture__likes').textContent = photo.likes;
-      element.querySelector('.picture__comments').textContent = photo.comments.length;
-      fragment.appendChild(element);
-    }
-    picturesBlock.appendChild(fragment);
-  };
-
   xhr.addEventListener('load', function () {
     switch (xhr.status) {
       case 200:
@@ -55,7 +35,7 @@
           return b.likes - a.likes;
         });
         window.photos = photos;
-        renderPhotos(photos);
+        window.renderPhotos(photos);
         break;
       case 300:
         errorPopupTitle.textContent = 'Ошибка: Запрос был перенаправлен сервером.';
@@ -97,7 +77,7 @@
   filterRandomPhotos.addEventListener('click', function () {
     window.debounce(function () {
       var randomPhotos = shuffle(window.photos);
-      renderPhotos(randomPhotos.slice(0, 10));
+      window.renderPhotos(randomPhotos.slice(0, 10));
     })();
   });
 
@@ -106,7 +86,7 @@
       window.photos.sort(function (a, b) {
         return b.likes - a.likes;
       });
-      renderPhotos(window.photos);
+      window.renderPhotos(window.photos);
     })();
   });
 
@@ -115,8 +95,7 @@
       window.photos.sort(function (a, b) {
         return b.comments.length - a.comments.length;
       });
-      renderPhotos(window.photos);
+      window.renderPhotos(window.photos);
     })();
   });
-
 })();
