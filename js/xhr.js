@@ -3,7 +3,6 @@
 (function () {
 
   var URL = 'https://js.dump.academy/kekstagram/data';
-  var lastTimeout;
   // Блок: Сообщение с ошибкой загрузки изображения
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var errorPopup = errorTemplate.cloneNode(true);
