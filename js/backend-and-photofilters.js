@@ -74,11 +74,13 @@
     return photos;
   }
 
+  var renderRandomPhotos = window.debounce(function () {
+    var randomPhotos = shuffle(window.photos);
+    window.renderPhotos(randomPhotos.slice(0, 10));
+  });
+
   filterRandomPhotos.addEventListener('click', function () {
-    window.debounce(function () {
-      var randomPhotos = shuffle(window.photos);
-      window.renderPhotos(randomPhotos.slice(0, 10));
-    })();
+    renderRandomPhotos();
   });
 
   filterPopularPhotos.addEventListener('click', function () {
@@ -98,4 +100,6 @@
       window.renderPhotos(window.photos);
     })();
   });
+
+
 })();
