@@ -35,8 +35,6 @@
     picturesBlock.appendChild(fragment);
   };
 
-  window.renderPhotos = renderPhotos;
-
   var closeBigPicture = function () {
     bigPicture.classList.add('hidden');
     document.removeEventListener('click', onCloseBigPicture);
@@ -54,6 +52,8 @@
 
   bigPictureCancel.addEventListener('click', onCloseBigPicture);
   document.addEventListener('keydown', onPressEscBigPicture);
+
+  window.renderPhotos = renderPhotos;
 
 
 })();
