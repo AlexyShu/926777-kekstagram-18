@@ -2,15 +2,8 @@
 
 (function () {
 
-  var bigPicture = document.querySelector('.big-picture');
-  var bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
-
-  var KeyCode = {
-    ENTER: 13,
-    ESC: 27
-  };
-
   var renderPhotos = function (photos) {
+    window.rawPhotos = photos;
     var picturesBlock = document.querySelector('.pictures');
     var photosTemplate = document.querySelector('#picture').content.querySelector('.picture');
     window.photosTemplate = photosTemplate;
@@ -25,35 +18,14 @@
       element.querySelector('.picture__img').src = photo.url;
       element.querySelector('.picture__likes').textContent = photo.likes;
       element.querySelector('.picture__comments').textContent = photo.comments.length;
-      // показываем фотов в полном экране
-      element.addEventListener('click', function () {
-        bigPicture.classList.remove('hidden');
-      });
-
+      element.addEventListener('click', window.openPhoto);
       fragment.appendChild(element);
     }
     picturesBlock.appendChild(fragment);
-  };
 
-  var closeBigPicture = function () {
-    bigPicture.classList.add('hidden');
-    document.removeEventListener('click', onCloseBigPicture);
-  };
 
-  var onCloseBigPicture = function () {
-    closeBigPicture();
   };
-
-  var onPressEscBigPicture = function (evt) {
-    if (evt.keyCode === KeyCode.ESC) {
-      closeBigPicture();
-    }
-  };
-
-  bigPictureCancel.addEventListener('click', onCloseBigPicture);
-  document.addEventListener('keydown', onPressEscBigPicture);
 
   window.renderPhotos = renderPhotos;
-
 
 })();
