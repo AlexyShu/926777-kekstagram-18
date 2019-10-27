@@ -30,7 +30,9 @@
 
   var cleanComments = function () {
     var comments = commentsBlock.querySelectorAll('.social__comment');
-    commentsBlock.removeChild(comments);
+    for (var i = 0; i < comments.length; i++) {
+      commentsBlock.removeChild(comments[i]);
+    }
   };
 
   var renderComment = function (index) {
