@@ -16,23 +16,33 @@
     ESC: 27
   };
 
-  var openPhoto = function () {
-    bigPhoto.classList.remove('hidden');
-    photoWrapper.src = window.rawPhotos[0].url;
-    photoLikes.textContent = window.rawPhotos[0].likes;
-    countPhotoComments.textContent = '' + window.rawPhotos[0].comments.length;
-    photoDescription.textContent = window.rawPhotos[0].description;
-    renderComment();
+  var openPhoto = function (index) {
+    return function () {
+      bigPhoto.classList.remove('hidden');
+      photoWrapper.src = window.rawPhotos[index].url;
+      photoLikes.textContent = window.rawPhotos[index].likes;
+      countPhotoComments.textContent = '' + window.rawPhotos[index].comments.length;
+      photoDescription.textContent = window.rawPhotos[index].description;
+      cleanComments();
+      renderComment(index);
+    };
   };
 
-  var renderComment = function () {
+  var cleanComments = function () {
+    var comments = commentsBlock.querySelectorAll('.social__comment');
+    for (var i = 0; i < comments.length; i++) {
+      commentsBlock.removeChild(comments[i]);
+    }
+  };
+
+  var renderComment = function (index) {
     var commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.rawPhotos[0].comments.length; i++) {
+    for (var i = 0; i < window.rawPhotos[index].comments.length; i++) {
       var element = commentTemplate.cloneNode(true);
-      element.querySelector('.social__picture').src = window.rawPhotos[0].comments[i].avatar;
-      element.querySelector('.social__picture').alt = window.rawPhotos[0].comments[i].name;
-      element.querySelector('.social__text').textContent = window.rawPhotos[0].comments[i].message;
+      element.querySelector('.social__picture').src = window.rawPhotos[index].comments[i].avatar;
+      element.querySelector('.social__picture').alt = window.rawPhotos[index].comments[i].name;
+      element.querySelector('.social__text').textContent = window.rawPhotos[index].comments[i].message;
       fragment.appendChild(element);
     }
     commentsBlock.appendChild(fragment);
