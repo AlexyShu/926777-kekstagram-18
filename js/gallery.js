@@ -2,7 +2,7 @@
 
 (function () {
 
-  var onSuccess = function (photos) {
+  var onSuccess = function (photos) { // photos - это мой xhr.response
     window.renderPhotos(photos);
     window.showFilters(photos);
   };
