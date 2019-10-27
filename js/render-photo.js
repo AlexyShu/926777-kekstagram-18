@@ -18,7 +18,7 @@
       element.querySelector('.picture__img').src = photo.url;
       element.querySelector('.picture__likes').textContent = photo.likes;
       element.querySelector('.picture__comments').textContent = photo.comments.length;
-      element.addEventListener('click', window.openPhoto);
+      element.addEventListener('click', window.openPhoto(i));
       fragment.appendChild(element);
     }
     picturesBlock.appendChild(fragment);
