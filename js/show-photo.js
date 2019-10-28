@@ -11,11 +11,6 @@
   var socialCommentCount = document.querySelector('.social__comment-count');
   var commentsLoader = document.querySelector('.comments-loader');
 
-  var KeyCode = {
-    ENTER: 13,
-    ESC: 27
-  };
-
   var openPhoto = function (index) {
     return function () {
       bigPhoto.classList.remove('hidden');
@@ -63,13 +58,20 @@
   };
 
   var onPressEscBigPhoto = function (evt) {
-    if (evt.keyCode === KeyCode.ESC) {
+    if (evt.keyCode === window.util.ESC_KEY_CODE) {
       closeBigPhoto();
+    }
+  };
+
+  var onEnterPress = function (evt) {
+    if (evt.keyCode === window.util.ENTER_KEY_CODE) {
+      openPhoto();
     }
   };
 
   bigPhotoCancel.addEventListener('click', onCloseBigPhoto);
   document.addEventListener('keydown', onPressEscBigPhoto);
+  document.addEventListener('keydown', onEnterPress);
 
   window.openPhoto = openPhoto;
 

@@ -1,14 +1,14 @@
 'use strict';
 
-// молдуль form
 (function () {
-  var ESC_KEYCODE = 27;
   // задаю переменную для input
   var uploadFileElement = document.querySelector('.img-upload__input');
   // задаю переменную для - Формы редактирования изображения
   var uploadPopupElement = document.querySelector('.img-upload__overlay');
   // задаю переменную для кнопки закрытия формы
   var uploadPopupCloseElement = document.querySelector('.img-upload__cancel');
+
+  var textError = '';
 
   var errorMessage = {
     HASHTAG_SIMBOL: 'Хэш-тег начинается с символа # (решётка)',
@@ -22,7 +22,8 @@
   var textLimitations = {
     MAX_LENGTH: 20,
     MIN_LENGTH: 1,
-    MAX_AMOUNT: 5
+    MAX_AMOUNT: 5,
+    MAX_LENGTH_COMMENT: 14,
   };
 
   // функция-обработчик закрытия формы при нажатии esc
@@ -44,7 +45,7 @@
 
   // закрытие формы при нажатие на esc
   var onFormEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (evt.keyCode === window.util.ESC_KEY_CODE) {
       closeForm();
     }
   };
@@ -59,7 +60,6 @@
 
   var hashtagValidity = function (target, value) {
     var hashtagsArray = value.toLowerCase().split(' ');
-    var textError = '';
     var validTagsCount = 0;
     while (hashtagsArray.length) {
       var hashtag = hashtagsArray.splice(0, 1)[0];
@@ -89,6 +89,18 @@
     var target = evt.target;
 
     hashtagValidity(target, hashtags);
+  });
+
+  // Валидация коментария
+  var commentWindow = document.querySelector('.text__description'); // textarea в разделе - Добавление хэш-тегов и комментария к изображению
+
+  commentWindow.addEventListener('input', function (evt) {
+    var target = evt.target;
+    if (target.value.length < textLimitations.MAX_LENGTH_COMMENT) {
+      target.setCustomValidity('лина комментария не может составлять больше 140 символов');
+    } else {
+      target.setCustomValidity('');
+    }
   });
 
 })();
