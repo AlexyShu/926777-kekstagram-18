@@ -1,11 +1,15 @@
 'use strict';
 
-// модуль filters
 (function () {
   // Слайдер для фильтра
   // пин слайдера
   var pinHandle = document.querySelector('.effect-level__pin');
-  // var effectLine = document.querySelector('.effect-level__line');
+  /* var effectLine = document.querySelector('.effect-level__line');
+  var imgElement = document.querySelector('.img-upload__preview');
+  var depthElement = document.querySelector('.effect-level__depth');
+  var elementValue = document.querySelector('.effect-level__value');
+
+  var elementsArray = document.querySelectorAll('.effects__item'); */
 
   // передвижение пина
   pinHandle.addEventListener('mousedown', function (evt) {
@@ -38,9 +42,6 @@
   // Выбор фильтра для фото
   var imageUploadPreview = document.querySelector('.img-upload__preview img'); // CSS-стили картинки
   var effectsRadioArray = document.querySelectorAll('.effects__radio'); // input наложение эффекта на изображение
-
-  effectsRadioArray[0].addEventListener('click', function () {
-  });
 
   effectsRadioArray.forEach(function (element) { // выполняет указанную функцию один раз для каждого элемента в массиве
     element.addEventListener('click', function (evt) {
