@@ -4,12 +4,12 @@
   // Слайдер для фильтра
   // пин слайдера
   var pinHandle = document.querySelector('.effect-level__pin');
-  var effectLine = document.querySelector('.effect-level__line');
+  /* var effectLine = document.querySelector('.effect-level__line');
   var imgElement = document.querySelector('.img-upload__preview');
   var depthElement = document.querySelector('.effect-level__depth');
   var elementValue = document.querySelector('.effect-level__value');
 
-  var elementsArray = document.querySelectorAll('.effects__item');
+  var elementsArray = document.querySelectorAll('.effects__item'); */
 
   // передвижение пина
   pinHandle.addEventListener('mousedown', function (evt) {
@@ -27,7 +27,6 @@
         x: moveEvt.clientX
       };
       pinHandle.style.left = (pinHandle.offsetLeft - shift.x) + 'px';
-      console.log('Кружочек слева', (pinHandle.offsetLeft - shift.x));
     };
 
     var onMouseUp = function (upEvt) {
