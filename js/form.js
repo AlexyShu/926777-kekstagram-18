@@ -23,7 +23,7 @@
     MAX_LENGTH: 20,
     MIN_LENGTH: 1,
     MAX_AMOUNT: 5,
-    MAX_LENGTH_COMMENT: 14,
+    MAX_LENGTH_COMMENT: 140,
   };
 
   // функция-обработчик закрытия формы при нажатии esc
@@ -47,6 +47,13 @@
   var onFormEscPress = function (evt) {
     if (evt.keyCode === window.util.ESC_KEY_CODE) {
       closeForm();
+    }
+  };
+
+  // Не закрывать форму по escape если фокус в поле
+  var onFieldFocus = function (evt) {
+    if (evt.keyCode === window.util.ESC_KEY_CODE) {
+      evt.stopPropagation();
     }
   };
 
@@ -91,16 +98,21 @@
     hashtagValidity(target, hashtags);
   });
 
+
   // Валидация коментария
   var commentWindow = document.querySelector('.text__description'); // textarea в разделе - Добавление хэш-тегов и комментария к изображению
 
   commentWindow.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value.length < textLimitations.MAX_LENGTH_COMMENT) {
-      target.setCustomValidity('лина комментария не может составлять больше 140 символов');
+    if (target.value.length > textLimitations.MAX_LENGTH_COMMENT) {
+      target.setCustomValidity('Длина комментария не может составлять больше 140 символов');
+      target.reportValidity();
     } else {
       target.setCustomValidity('');
     }
   });
+
+  textHashtagsInput.addEventListener('keydown', onFieldFocus);
+  commentWindow.addEventListener('keydown', onFieldFocus);
 
 })();
