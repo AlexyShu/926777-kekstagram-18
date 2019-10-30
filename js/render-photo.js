@@ -3,7 +3,6 @@
 (function () {
 
   var renderPhotos = function (photos) {
-    window.rawPhotos = photos;
     var picturesBlock = document.querySelector('.pictures');
     var photosTemplate = document.querySelector('#picture').content.querySelector('.picture');
     window.photosTemplate = photosTemplate;
@@ -18,7 +17,7 @@
       element.querySelector('.picture__img').src = photo.url;
       element.querySelector('.picture__likes').textContent = photo.likes;
       element.querySelector('.picture__comments').textContent = photo.comments.length;
-      element.addEventListener('click', window.openPhoto(i));
+      element.addEventListener('click', window.openPhoto(photo));
       fragment.appendChild(element);
     }
     picturesBlock.appendChild(fragment);

@@ -10,16 +10,6 @@
   var elementValue = document.querySelector('.effect-level__value');
 
   var elementsArray = document.querySelectorAll('.effects__item');
-  
-  var getCoords = function (elem) {
-    var box = elem.getBoundingClientRect();
-    return {
-      top: box.top + pageYOffset,
-      left: box.left + pageXOffset,
-      width: box.width,
-      height: box.height
-    };
-  };
 
   // передвижение пина
   pinHandle.addEventListener('mousedown', function (evt) {
