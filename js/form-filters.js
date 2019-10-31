@@ -4,12 +4,11 @@
   // Слайдер для фильтра
   // пин слайдера
   var pinHandle = document.querySelector('.effect-level__pin');
-  /* var effectLine = document.querySelector('.effect-level__line');
-  var imgElement = document.querySelector('.img-upload__preview');
-  var depthElement = document.querySelector('.effect-level__depth');
-  var elementValue = document.querySelector('.effect-level__value');
-
-  var elementsArray = document.querySelectorAll('.effects__item'); */
+  var effectLevelLine = document.querySelector('.effect-level__line');
+  var effectLevelBlock = document.querySelector('.img-upload__effect-level ');
+  var imageUploadPreview = document.querySelector('.img-upload__preview img'); // CSS-стили картинки
+  var effectsRadioArray = document.querySelectorAll('.effects__radio'); // input наложение эффекта на изображение
+  var FILTER_DEFAULT_VALUE = 100;
 
   // передвижение пина
   pinHandle.addEventListener('mousedown', function (evt) {
@@ -27,6 +26,29 @@
         x: moveEvt.clientX
       };
       pinHandle.style.left = (pinHandle.offsetLeft - shift.x) + 'px';
+
+      // получаю процент где находится пин
+      var percents = Math.round((pinHandle.offsetLeft - shift.x) * 100 / effectLevelLine.getBoundingClientRect().width);
+      document.querySelector('input[name=effect-level]').setAttribute('value', percents);
+      // глубина эффекта
+      if (window.currentEffect === 'chrome') {
+        imageUploadPreview.style.filter = 'grayscale(' + (percents * 1 / 100) + ')';
+      }
+      if (window.currentEffect === 'sepia') {
+        imageUploadPreview.style.filter = 'sepia(' + (percents * 1 / 100) + ')';
+      }
+      if (window.currentEffect === 'marvin') {
+        imageUploadPreview.style.filter = 'invert(' + (percents * 100 / 100) + '%)';
+      }
+      if (window.currentEffect === 'phobos') {
+        imageUploadPreview.style.filter = 'blur(' + (percents * 3 / 100) + 'px)';
+      }
+      if (window.currentEffect === 'heat') {
+        imageUploadPreview.style.filter = 'brightness(' + (percents * 3 / 100) + 'px)';
+      }
+      if (window.currentEffect === 'none') {
+        imageUploadPreview.style.filter = 'none';
+      }
     };
 
     var onMouseUp = function (upEvt) {
@@ -34,19 +56,27 @@
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
-
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  // Выбор фильтра для фото
-  var imageUploadPreview = document.querySelector('.img-upload__preview img'); // CSS-стили картинки
-  var effectsRadioArray = document.querySelectorAll('.effects__radio'); // input наложение эффекта на изображение
+  var filterHandler = function () {
+    if (window.currentEffect !== 'none') {
+      effectLevelBlock.classList.remove('hidden');
+    } else {
+      effectLevelBlock.classList.add('hidden');
+    }
+  };
 
+
+  // Выбор фильтра для фото
   effectsRadioArray.forEach(function (element) { // выполняет указанную функцию один раз для каждого элемента в массиве
     element.addEventListener('click', function (evt) {
       imageUploadPreview.className = '';
       imageUploadPreview.classList.add('effects__preview--' + evt.target.value);
+      window.currentEffect = evt.target.value;
+      filterHandler();
+      pinHandle.style.left = FILTER_DEFAULT_VALUE + '%';
     });
   });
 
@@ -81,6 +111,5 @@
   scaleControlBigger.addEventListener('click', function () {
     onClickScale(1);
   });
-
 
 })();
