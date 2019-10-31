@@ -30,24 +30,26 @@
       // получаю процент где находится пин
       var percents = Math.round((pinHandle.offsetLeft - shift.x) * 100 / effectLevelLine.getBoundingClientRect().width);
       document.querySelector('input[name=effect-level]').setAttribute('value', percents);
-      // глубина эффекта
-      if (window.currentEffect === 'chrome') {
-        imageUploadPreview.style.filter = 'grayscale(' + (percents * 1 / 100) + ')';
-      }
-      if (window.currentEffect === 'sepia') {
-        imageUploadPreview.style.filter = 'sepia(' + (percents * 1 / 100) + ')';
-      }
-      if (window.currentEffect === 'marvin') {
-        imageUploadPreview.style.filter = 'invert(' + (percents * 100 / 100) + '%)';
-      }
-      if (window.currentEffect === 'phobos') {
-        imageUploadPreview.style.filter = 'blur(' + (percents * 3 / 100) + 'px)';
-      }
-      if (window.currentEffect === 'heat') {
-        imageUploadPreview.style.filter = 'brightness(' + (percents * 3 / 100) + 'px)';
-      }
-      if (window.currentEffect === 'none') {
-        imageUploadPreview.style.filter = 'none';
+      imageUploadPreview.style.filter = getEffect(window.currentEffect, percents);
+    };
+
+    // глубина эффекта
+    var getEffect = function (value, percents) {
+      switch (value) {
+        case 'chrome':
+          return 'grayscale(' + (percents * 1 / 100) + ')';
+        case 'sepia':
+          return 'sepia(' + (percents * 1 / 100) + ')';
+        case 'marvin':
+          return 'invert(' + (percents * 100 / 100) + '%)';
+        case 'phobos':
+          return 'blur(' + (percents * 3 / 100) + 'px)';
+        case 'heat':
+          return 'brightness(' + (percents * 3 / 100) + 'px)';
+        // case 'none':
+        //   return '';
+        default:
+          return '';
       }
     };
 
