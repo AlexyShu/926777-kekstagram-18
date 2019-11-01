@@ -9,6 +9,7 @@
   var imageUploadPreview = document.querySelector('.img-upload__preview img'); // CSS-стили картинки
   var effectsRadioArray = document.querySelectorAll('.effects__radio'); // input наложение эффекта на изображение
   var FILTER_DEFAULT_VALUE = 100;
+  var currentEffect = 'none';
 
   // передвижение пина
   pinHandle.addEventListener('mousedown', function (evt) {
@@ -30,7 +31,7 @@
       // получаю процент где находится пин
       var percents = Math.round((pinHandle.offsetLeft - shift.x) * 100 / effectLevelLine.getBoundingClientRect().width);
       document.querySelector('input[name=effect-level]').setAttribute('value', percents);
-      imageUploadPreview.style.filter = getEffect(window.currentEffect, percents);
+      imageUploadPreview.style.filter = getEffect(currentEffect, percents);
     };
 
     // глубина эффекта
@@ -63,20 +64,19 @@
   });
 
   var filterHandler = function () {
-    if (window.currentEffect !== 'none') {
+    if (currentEffect !== 'none') {
       effectLevelBlock.classList.remove('hidden');
     } else {
       effectLevelBlock.classList.add('hidden');
     }
   };
 
-
   // Выбор фильтра для фото
   effectsRadioArray.forEach(function (element) { // выполняет указанную функцию один раз для каждого элемента в массиве
     element.addEventListener('click', function (evt) {
       imageUploadPreview.className = '';
       imageUploadPreview.classList.add('effects__preview--' + evt.target.value);
-      window.currentEffect = evt.target.value;
+      currentEffect = evt.target.value;
       filterHandler();
       pinHandle.style.left = FILTER_DEFAULT_VALUE + '%';
     });
