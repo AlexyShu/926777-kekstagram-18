@@ -7,6 +7,10 @@
   var uploadPopupElement = document.querySelector('.img-upload__overlay');
   // задаю переменную для кнопки закрытия формы
   var uploadPopupCloseElement = document.querySelector('.img-upload__cancel');
+  // форма
+  var formElement = document.querySelector('.img-upload__form');
+  var mainBlock = document.querySelector('.main');
+
 
   var textError = '';
 
@@ -114,5 +118,71 @@
 
   textHashtagsInput.addEventListener('keydown', onFieldFocus);
   commentWindow.addEventListener('keydown', onFieldFocus);
+
+  // отправка данных формы на сервер
+
+  formElement.addEventListener('submit', function (evt) {
+    if (formElement.checkValidity()) {
+      evt.preventDefault();
+      window.xhr.upload(new FormData(formElement));
+
+      closeForm();
+      createSuccessMessage();
+    } else {
+      createErrorMessage();
+    }
+  });
+
+  // отрисовка сообщения об успешной отправки
+  var createSuccessMessage = function () {
+    var successTemplate = document.querySelector('#success').content.querySelector('.success');
+    var fragment = document.createDocumentFragment(section);
+    var section = successTemplate.cloneNode(true);
+    fragment.appendChild(section);
+    mainBlock.appendChild(fragment);
+
+    var successBtn = mainBlock.querySelector('.success__button');
+    successBtn.addEventListener('click', cleanSuccessMessage);
+    mainBlock.addEventListener('click', cleanSuccessMessage);
+    document.addEventListener('keydown', onSuccessMessaEscPress);
+  };
+
+  var cleanSuccessMessage = function () {
+    var SuccessMessagPopup = mainBlock.querySelector('.success');
+    mainBlock.removeChild(SuccessMessagPopup);
+  };
+
+  // закрытие сообщения об отправки данных по esc
+  var onSuccessMessaEscPress = function (evt) {
+    if (evt.keyCode === window.util.ESC_KEY_CODE) {
+      cleanSuccessMessage();
+    }
+  };
+
+  // отрисовка сообщения об ошибке отправки
+  var createErrorMessage = function () {
+    var ErrorTemplate = document.querySelector('#error').content.querySelector('.error');
+    var fragment = document.createDocumentFragment(section);
+    var section = ErrorTemplate.cloneNode(true);
+    fragment.appendChild(section);
+    mainBlock.appendChild(fragment);
+
+    var errorBtn = mainBlock.querySelector('.error__button');
+    errorBtn.addEventListener('click', cleanErrorMessage);
+    mainBlock.addEventListener('click', cleanErrorMessage);
+    document.addEventListener('keydown', errorMessaEscPress);
+  };
+
+  var cleanErrorMessage = function () {
+    var errorMessagPopup = mainBlock.querySelector('.error');
+    mainBlock.removeChild(errorMessagPopup);
+  };
+
+  // закрытие сообщения об отправки данных по esc
+  var errorMessaEscPress = function (evt) {
+    if (evt.keyCode === window.util.ESC_KEY_CODE) {
+      cleanErrorMessage();
+    }
+  };
 
 })();
