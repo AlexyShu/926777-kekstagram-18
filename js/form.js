@@ -11,9 +11,6 @@
   var formElement = document.querySelector('.img-upload__form');
   var mainBlock = document.querySelector('.main');
 
-
-  var textError = '';
-
   var errorMessage = {
     HASHTAG_SIMBOL: 'Хэш-тег начинается с символа # (решётка)',
     HASHTAG_ONLY_SIMBOL: 'Хеш-тег не может состоять только из одной решётки;',
@@ -72,6 +69,7 @@
   var hashtagValidity = function (target, value) {
     var hashtagsArray = value.toLowerCase().split(' ');
     var validTagsCount = 0;
+    var textError = '';
     while (hashtagsArray.length) {
       var hashtag = hashtagsArray.splice(0, 1)[0];
       if (hashtag[0] !== '#') {
