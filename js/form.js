@@ -122,12 +122,9 @@
   formElement.addEventListener('submit', function (evt) {
     if (formElement.checkValidity()) {
       evt.preventDefault();
-      window.xhr.upload(new FormData(formElement));
-
+      window.xhr.upload(new FormData(formElement), createSuccessMessage(), createErrorMessage());
       closeForm();
       createSuccessMessage();
-    } else {
-      createErrorMessage();
     }
   });
 

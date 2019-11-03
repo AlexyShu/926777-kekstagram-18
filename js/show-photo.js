@@ -53,7 +53,8 @@
     commentsBlock.appendChild(fragment);
   };
 
-  socialCommentCount.classList.add('visually-hidden');
+
+  // socialCommentCount.classList.add('visually-hidden');
 
   var bigPhotoCancel = bigPhoto.querySelector('.big-picture__cancel');
 
