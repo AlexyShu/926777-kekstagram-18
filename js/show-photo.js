@@ -8,7 +8,6 @@
   var countPhotoComments = document.querySelector('.comments-count');
   var photoDescription = document.querySelector('.social__caption');
   var commentsBlock = document.querySelector('.social__comments');
-  var socialCommentCount = document.querySelector('.social__comment-count');
   var commentsLoader = document.querySelector('.comments-loader');
   var commentsBtnClicks;
   var currentPhoto = null;
