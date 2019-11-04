@@ -74,23 +74,30 @@
       var hashtag = hashtagsArray.splice(0, 1)[0];
       if (hashtag[0] !== '#') {
         textError = errorMessage.HASHTAG_SIMBOL;
+        textHashtagsInput.style.outlineColor = 'red';
         break;
       } else if (hashtag.length > textLimitations.MAX_LENGTH) {
         textError = errorMessage.HASHTAG_TOO_LONG;
+        textHashtagsInput.style.outlineColor = 'red';
         break;
       } else if (hashtag.length === textLimitations.MIN_LENGTH) {
         textError = errorMessage.HASHTAG_ONLY_SIMBOL;
+        textHashtagsInput.style.outlineColor = 'red';
         break;
       } else if (hashtagsArray.indexOf(hashtag) > -1) {
         textError = errorMessage.HASHTAG_REPEAT;
+        textHashtagsInput.style.outlineColor = 'red';
         break;
       }
       validTagsCount++;
     }
     if (validTagsCount > textLimitations.MAX_AMOUNT) {
-      textError = textError = errorMessage.HASHTAG_TOO_MUCH;
+      textError = errorMessage.HASHTAG_TOO_MUCH;
     }
     target.setCustomValidity(textError);
+    if (textError === '') {
+      textHashtagsInput.style.outlineColor = 'none';
+    }
   };
 
   textHashtagsInput.addEventListener('input', function (evt) {
@@ -99,7 +106,6 @@
 
     hashtagValidity(target, hashtags);
   });
-
 
   // Валидация коментария
   var commentWindow = document.querySelector('.text__description'); // textarea в разделе - Добавление хэш-тегов и комментария к изображению
