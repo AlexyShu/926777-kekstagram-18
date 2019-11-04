@@ -5,7 +5,7 @@
   var bigPhoto = document.querySelector('.big-picture');
   var photoWrapper = document.querySelector('.big-picture__img img');
   var photoLikes = document.querySelector('.likes-count');
-  var countPhotoComments = document.querySelector('.comments-count');
+  var socialCommentCount = document.querySelector('.social__comment-count');
   var photoDescription = document.querySelector('.social__caption');
   var commentsBlock = document.querySelector('.social__comments');
   var commentsLoader = document.querySelector('.comments-loader');
@@ -18,7 +18,6 @@
       bigPhoto.classList.remove('hidden');
       photoWrapper.src = photo.url;
       photoLikes.textContent = photo.likes;
-      countPhotoComments.textContent = '' + photo.comments.length;
       photoDescription.textContent = photo.description;
       cleanComments();
       commentsBtnClicks = 0;
@@ -38,8 +37,9 @@
   var renderComment = function (photo) {
     var maxIndex = (commentsBtnClicks + 1) * ELEMENTS;
     if (maxIndex > photo.comments.length - 1) {
-      maxIndex = photo.comments.length - 1;
+      maxIndex = photo.comments.length;
     }
+    socialCommentCount.textContent = maxIndex + ' из ' + photo.comments.length;
     var commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < maxIndex; i++) {
@@ -51,9 +51,6 @@
     }
     commentsBlock.appendChild(fragment);
   };
-
-
-  // socialCommentCount.classList.add('visually-hidden');
 
   var bigPhotoCancel = bigPhoto.querySelector('.big-picture__cancel');
 
