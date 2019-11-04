@@ -23,7 +23,6 @@
       commentsBtnClicks = 0;
       renderComment(photo);
       currentPhoto = photo;
-
     };
   };
 
@@ -38,6 +37,7 @@
     var maxIndex = (commentsBtnClicks + 1) * ELEMENTS;
     if (maxIndex > photo.comments.length - 1) {
       maxIndex = photo.comments.length;
+      commentsLoader.classList.add('hidden');
     }
     socialCommentCount.textContent = maxIndex + ' из ' + photo.comments.length;
     var commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
