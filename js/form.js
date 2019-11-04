@@ -93,10 +93,11 @@
     }
     if (validTagsCount > textLimitations.MAX_AMOUNT) {
       textError = errorMessage.HASHTAG_TOO_MUCH;
+      textHashtagsInput.style.outlineColor = 'red';
     }
     target.setCustomValidity(textError);
     if (textError === '') {
-      textHashtagsInput.style.outlineColor = 'none';
+      textHashtagsInput.style.outlineColor = '';
     }
   };
 
