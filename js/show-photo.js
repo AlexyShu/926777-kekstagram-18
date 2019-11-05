@@ -9,6 +9,7 @@
   var photoDescription = document.querySelector('.social__caption');
   var commentsBlock = document.querySelector('.social__comments');
   var commentsLoader = document.querySelector('.comments-loader');
+  var tegBody = document.querySelector('.body');
   var commentsBtnClicks;
   var currentPhoto = null;
   var ELEMENTS = 5;
@@ -23,6 +24,7 @@
       commentsBtnClicks = 0;
       renderComment(photo);
       currentPhoto = photo;
+      tegBody.classList.add('modal-open');
     };
   };
 
@@ -57,6 +59,7 @@
   var closeBigPhoto = function () {
     bigPhoto.classList.add('hidden');
     document.removeEventListener('click', onCloseBigPhoto);
+    tegBody.classList.remove('modal-open');
   };
 
   var onCloseBigPhoto = function () {
