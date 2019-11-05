@@ -10,9 +10,11 @@
   var commentsBlock = document.querySelector('.social__comments');
   var commentsLoader = document.querySelector('.comments-loader');
   var tegBody = document.querySelector('.body');
+  var bigPhotoCancel = bigPhoto.querySelector('.big-picture__cancel');
   var commentsBtnClicks;
   var currentPhoto = null;
   var ELEMENTS = 5;
+
 
   var openPhoto = function (photo) {
     return function () {
@@ -53,8 +55,6 @@
     }
     commentsBlock.appendChild(fragment);
   };
-
-  var bigPhotoCancel = bigPhoto.querySelector('.big-picture__cancel');
 
   var closeBigPhoto = function () {
     bigPhoto.classList.add('hidden');

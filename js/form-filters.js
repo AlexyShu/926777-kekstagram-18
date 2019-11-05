@@ -11,6 +11,14 @@
   var FILTER_DEFAULT_VALUE = 100;
   var currentEffect = 'none';
 
+  // Масштаб фотографии
+  var scaleControlValue = document.querySelector('.scale__control--value');
+  var scaleControlSmaller = document.querySelector('.scale__control--smaller');
+  var scaleControlBigger = document.querySelector('.scale__control--bigger');
+  var STEP = 25; // Значение должно изменяться с шагом 25
+  var MAX_VALUE = 100;
+  var MIN_VALUE = 25;
+
   // передвижение пина
   pinHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -83,12 +91,6 @@
   });
 
   // Масштаб фотографии
-  var scaleControlValue = document.querySelector('.scale__control--value');
-  var scaleControlSmaller = document.querySelector('.scale__control--smaller');
-  var scaleControlBigger = document.querySelector('.scale__control--bigger');
-  var STEP = 25; // Значение должно изменяться с шагом 25
-  var MAX_VALUE = 100;
-  var MIN_VALUE = 25;
   scaleControlValue.value = MAX_VALUE + '%';
 
   var setImageScale = function (scale) {
