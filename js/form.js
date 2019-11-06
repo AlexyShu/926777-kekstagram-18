@@ -11,7 +11,7 @@
   var formElement = document.querySelector('.img-upload__form');
   var mainBlock = document.querySelector('.main');
 
-  var errorMessage = {
+  var ErrorMessage = {
     HASHTAG_SIMBOL: 'Хэш-тег начинается с символа # (решётка)',
     HASHTAG_ONLY_SIMBOL: 'Хеш-тег не может состоять только из одной решётки;',
     HASHTAG_SPACES: 'Хэш-теги разделяются пробелами',
@@ -20,12 +20,14 @@
     HASHTAG_TOO_LONG: 'Максимальная длина одного хэш-тега 20 символов, включая решётку',
   };
 
-  var textLimitations = {
+  var TextLimitations = {
     MAX_LENGTH: 20,
     MIN_LENGTH: 1,
     MAX_AMOUNT: 5,
     MAX_LENGTH_COMMENT: 140,
   };
+
+  var textHashtagsInput = document.querySelector('.text__hashtags'); // input в разделе - Добавление хэш-тегов и комментария к изображению
 
   // функция-обработчик закрытия формы при нажатии esc
   // к форме добавляю класс hidden
@@ -64,7 +66,6 @@
   });
 
   // Валидация Хештегов
-  var textHashtagsInput = document.querySelector('.text__hashtags'); // input в разделе - Добавление хэш-тегов и комментария к изображению
 
   var hashtagValidity = function (target, value) {
     var hashtagsArray = value.toLowerCase().split(' ');
@@ -73,24 +74,25 @@
     while (hashtagsArray.length) {
       var hashtag = hashtagsArray.splice(0, 1)[0];
       if (hashtag[0] !== '#') {
-        textError = errorMessage.HASHTAG_SIMBOL;
+        textError = ErrorMessage.HASHTAG_SIMBOL;
         break;
-      } else if (hashtag.length > textLimitations.MAX_LENGTH) {
-        textError = errorMessage.HASHTAG_TOO_LONG;
+      } else if (hashtag.length > TextLimitations.MAX_LENGTH) {
+        textError = ErrorMessage.HASHTAG_TOO_LONG;
         break;
-      } else if (hashtag.length === textLimitations.MIN_LENGTH) {
-        textError = errorMessage.HASHTAG_ONLY_SIMBOL;
+      } else if (hashtag.length === TextLimitations.MIN_LENGTH) {
+        textError = ErrorMessage.HASHTAG_ONLY_SIMBOL;
         break;
       } else if (hashtagsArray.indexOf(hashtag) > -1) {
-        textError = errorMessage.HASHTAG_REPEAT;
+        textError = ErrorMessage.HASHTAG_REPEAT;
         break;
       }
       validTagsCount++;
     }
-    if (validTagsCount > textLimitations.MAX_AMOUNT) {
-      textError = textError = errorMessage.HASHTAG_TOO_MUCH;
+    if (validTagsCount > TextLimitations.MAX_AMOUNT) {
+      textError = ErrorMessage.HASHTAG_TOO_MUCH;
     }
     target.setCustomValidity(textError);
+    textHashtagsInput.style.outlineColor = (textError === '') ? '' : 'red';
   };
 
   textHashtagsInput.addEventListener('input', function (evt) {
@@ -100,13 +102,12 @@
     hashtagValidity(target, hashtags);
   });
 
-
   // Валидация коментария
   var commentWindow = document.querySelector('.text__description'); // textarea в разделе - Добавление хэш-тегов и комментария к изображению
 
   commentWindow.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value.length > textLimitations.MAX_LENGTH_COMMENT) {
+    if (target.value.length > TextLimitations.MAX_LENGTH_COMMENT) {
       target.setCustomValidity('Длина комментария не может составлять больше 140 символов');
       target.reportValidity();
     } else {

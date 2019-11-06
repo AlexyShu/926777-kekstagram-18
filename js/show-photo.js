@@ -5,26 +5,28 @@
   var bigPhoto = document.querySelector('.big-picture');
   var photoWrapper = document.querySelector('.big-picture__img img');
   var photoLikes = document.querySelector('.likes-count');
-  var countPhotoComments = document.querySelector('.comments-count');
+  var socialCommentCount = document.querySelector('.social__comment-count');
   var photoDescription = document.querySelector('.social__caption');
   var commentsBlock = document.querySelector('.social__comments');
   var commentsLoader = document.querySelector('.comments-loader');
+  var tegBody = document.querySelector('.body');
+  var bigPhotoCancel = bigPhoto.querySelector('.big-picture__cancel');
   var commentsBtnClicks;
   var currentPhoto = null;
   var ELEMENTS = 5;
+
 
   var openPhoto = function (photo) {
     return function () {
       bigPhoto.classList.remove('hidden');
       photoWrapper.src = photo.url;
       photoLikes.textContent = photo.likes;
-      countPhotoComments.textContent = '' + photo.comments.length;
       photoDescription.textContent = photo.description;
       cleanComments();
       commentsBtnClicks = 0;
       renderComment(photo);
       currentPhoto = photo;
-
+      tegBody.classList.add('modal-open');
     };
   };
 
@@ -38,8 +40,10 @@
   var renderComment = function (photo) {
     var maxIndex = (commentsBtnClicks + 1) * ELEMENTS;
     if (maxIndex > photo.comments.length - 1) {
-      maxIndex = photo.comments.length - 1;
+      maxIndex = photo.comments.length;
+      commentsLoader.classList.add('hidden');
     }
+    socialCommentCount.textContent = maxIndex + ' из ' + photo.comments.length;
     var commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < maxIndex; i++) {
@@ -52,14 +56,10 @@
     commentsBlock.appendChild(fragment);
   };
 
-
-  // socialCommentCount.classList.add('visually-hidden');
-
-  var bigPhotoCancel = bigPhoto.querySelector('.big-picture__cancel');
-
   var closeBigPhoto = function () {
     bigPhoto.classList.add('hidden');
     document.removeEventListener('click', onCloseBigPhoto);
+    tegBody.classList.remove('modal-open');
   };
 
   var onCloseBigPhoto = function () {
