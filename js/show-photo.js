@@ -19,6 +19,7 @@
   var openPhoto = function (photo) {
     return function () {
       bigPhoto.classList.remove('hidden');
+      commentsLoader.classList.remove('hidden');
       photoWrapper.src = photo.url;
       photoLikes.textContent = photo.likes;
       photoDescription.textContent = photo.description;

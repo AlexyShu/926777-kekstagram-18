@@ -15,6 +15,7 @@
       var reader = new FileReader();
       reader.addEventListener('load', function () {
         imgUploadPreviewElement.src = reader.result;
+        window.clearScaleControl();
       });
       reader.readAsDataURL(file);
     }

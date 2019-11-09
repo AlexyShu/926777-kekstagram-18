@@ -43,7 +43,6 @@
 
   var debouncedFilter = window.debounce(filterPhotos);
 
-  // функция "взболтать массив"
   var shuffle = function (pics) {
     var resultArr = [];
     for (var i = 0; i < 10; i++) {

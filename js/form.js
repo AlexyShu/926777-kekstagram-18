@@ -1,15 +1,12 @@
 'use strict';
 
 (function () {
-  // задаю переменную для input
   var uploadFileElement = document.querySelector('.img-upload__input');
-  // задаю переменную для - Формы редактирования изображения
   var uploadPopupElement = document.querySelector('.img-upload__overlay');
-  // задаю переменную для кнопки закрытия формы
   var uploadPopupCloseElement = document.querySelector('.img-upload__cancel');
-  // форма
   var formElement = document.querySelector('.img-upload__form');
   var mainBlock = document.querySelector('.main');
+  var successBtn;
 
   var ErrorMessage = {
     HASHTAG_SIMBOL: 'Хэш-тег начинается с символа # (решётка)',
@@ -27,16 +24,14 @@
     MAX_LENGTH_COMMENT: 140,
   };
 
-  var textHashtagsInput = document.querySelector('.text__hashtags'); // input в разделе - Добавление хэш-тегов и комментария к изображению
+  var textHashtagsInput = document.querySelector('.text__hashtags');
+  var commentWindow = document.querySelector('.text__description');
 
-  // функция-обработчик закрытия формы при нажатии esc
-  // к форме добавляю класс hidden
   var closeForm = function () {
     uploadPopupElement.classList.add('hidden');
     document.removeEventListener('keydown', onFormEscPress);
   };
 
-  // функция открытия формы
   var openForm = function () {
     uploadPopupElement.classList.remove('hidden');
     document.addEventListener('keydown', onFormEscPress);
@@ -46,29 +41,26 @@
     openForm();
   });
 
-  // закрытие формы при нажатие на esc
   var onFormEscPress = function (evt) {
     if (evt.keyCode === window.util.ESC_KEY_CODE) {
       closeForm();
     }
   };
 
-  // Не закрывать форму по escape если фокус в поле
   var onFieldFocus = function (evt) {
     if (evt.keyCode === window.util.ESC_KEY_CODE) {
       evt.stopPropagation();
     }
   };
 
-  // закрытие формы по клику
   uploadPopupCloseElement.addEventListener('click', function () {
     closeForm();
   });
 
-  // Валидация Хештегов
-
   var hashtagValidity = function (target, value) {
-    var hashtagsArray = value.toLowerCase().split(' ');
+    var hashtagsArray = value.toLowerCase().split(' ').filter(function (it) {
+      return it !== '';
+    });
     var validTagsCount = 0;
     var textError = '';
     while (hashtagsArray.length) {
@@ -102,23 +94,20 @@
     hashtagValidity(target, hashtags);
   });
 
-  // Валидация коментария
-  var commentWindow = document.querySelector('.text__description'); // textarea в разделе - Добавление хэш-тегов и комментария к изображению
-
   commentWindow.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value.length > TextLimitations.MAX_LENGTH_COMMENT) {
+    if (target.value.length >= TextLimitations.MAX_LENGTH_COMMENT) {
       target.setCustomValidity('Длина комментария не может составлять больше 140 символов');
       target.reportValidity();
+      commentWindow.style.outlineColor = 'red';
     } else {
       target.setCustomValidity('');
+      commentWindow.style.outlineColor = '';
     }
   });
 
   textHashtagsInput.addEventListener('keydown', onFieldFocus);
   commentWindow.addEventListener('keydown', onFieldFocus);
-
-  // отправка данных формы на сервер
 
   formElement.addEventListener('submit', function (evt) {
     if (formElement.checkValidity()) {
@@ -128,7 +117,6 @@
     }
   });
 
-  // отрисовка сообщения об успешной отправки
   var createSuccessMessage = function () {
     var successTemplate = document.querySelector('#success').content.querySelector('.success');
     var fragment = document.createDocumentFragment(section);
@@ -136,25 +124,26 @@
     fragment.appendChild(section);
     mainBlock.appendChild(fragment);
 
-    var successBtn = mainBlock.querySelector('.success__button');
+    successBtn = mainBlock.querySelector('.success__button');
     successBtn.addEventListener('click', cleanSuccessMessage);
     mainBlock.addEventListener('click', cleanSuccessMessage);
     document.addEventListener('keydown', onSuccessMessaEscPress);
   };
 
-  var cleanSuccessMessage = function () {
+  var cleanSuccessMessage = function (evt) {
+    evt.stopPropagation();
     var SuccessMessagPopup = mainBlock.querySelector('.success');
     mainBlock.removeChild(SuccessMessagPopup);
+    successBtn.removeEventListener('click', cleanSuccessMessage);
+    mainBlock.removeEventListener('click', cleanSuccessMessage);
   };
 
-  // закрытие сообщения об отправки данных по esc
   var onSuccessMessaEscPress = function (evt) {
     if (evt.keyCode === window.util.ESC_KEY_CODE) {
       cleanSuccessMessage();
     }
   };
 
-  // отрисовка сообщения об ошибке отправки
   var createErrorMessage = function () {
     var ErrorTemplate = document.querySelector('#error').content.querySelector('.error');
     var fragment = document.createDocumentFragment(section);
@@ -173,7 +162,6 @@
     mainBlock.removeChild(errorMessagPopup);
   };
 
-  // закрытие сообщения об отправки данных по esc
   var errorMessaEscPress = function (evt) {
     if (evt.keyCode === window.util.ESC_KEY_CODE) {
       cleanErrorMessage();

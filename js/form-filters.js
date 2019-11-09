@@ -1,25 +1,38 @@
 'use strict';
 
 (function () {
-  // Слайдер для фильтра
-  // пин слайдера
   var pinHandle = document.querySelector('.effect-level__pin');
   var effectLevelLine = document.querySelector('.effect-level__line');
   var effectLevelBlock = document.querySelector('.img-upload__effect-level ');
-  var imageUploadPreview = document.querySelector('.img-upload__preview img'); // CSS-стили картинки
-  var effectsRadioArray = document.querySelectorAll('.effects__radio'); // input наложение эффекта на изображение
+  var imageUploadPreview = document.querySelector('.img-upload__preview img');
+  var effectsRadioArray = document.querySelectorAll('.effects__radio');
+  var lineValue = document.querySelector('.effect-level__depth');
   var FILTER_DEFAULT_VALUE = 100;
   var currentEffect = 'none';
-
-  // Масштаб фотографии
+  var percents;
   var scaleControlValue = document.querySelector('.scale__control--value');
   var scaleControlSmaller = document.querySelector('.scale__control--smaller');
   var scaleControlBigger = document.querySelector('.scale__control--bigger');
-  var STEP = 25; // Значение должно изменяться с шагом 25
-  var MAX_VALUE = 100;
-  var MIN_VALUE = 25;
+  var STEP = 25;
 
-  // передвижение пина
+  var ValueType = {
+    MAX_VALUE: 100,
+    MIN_VALUE: 25
+  };
+
+  var getEffect = function (value, _percents) {
+    var map = {
+      'chrome': 'grayscale(' + (_percents * 1 / 100) + ')',
+      'sepia': 'sepia(' + (_percents * 1 / 100) + ')',
+      'marvin': 'invert(' + (_percents * 100 / 100) + '%)',
+      'phobos': 'blur(' + (_percents * 3 / 100) + 'px)',
+      'heat': 'brightness(' + (_percents * 3 / 100) + ')',
+      'none': '',
+    };
+    var result = map[value];
+    return result;
+  };
+
   pinHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var startCoords = {
@@ -36,30 +49,10 @@
       };
       pinHandle.style.left = (pinHandle.offsetLeft - shift.x) + 'px';
 
-      // получаю процент где находится пин
-      var percents = Math.round((pinHandle.offsetLeft - shift.x) * 100 / effectLevelLine.getBoundingClientRect().width);
+      percents = Math.round((pinHandle.offsetLeft - shift.x) * 100 / effectLevelLine.getBoundingClientRect().width);
       document.querySelector('input[name=effect-level]').setAttribute('value', percents);
       imageUploadPreview.style.filter = getEffect(currentEffect, percents);
-    };
-
-    // глубина эффекта
-    var getEffect = function (value, percents) {
-      switch (value) {
-        case 'chrome':
-          return 'grayscale(' + (percents * 1 / 100) + ')';
-        case 'sepia':
-          return 'sepia(' + (percents * 1 / 100) + ')';
-        case 'marvin':
-          return 'invert(' + (percents * 100 / 100) + '%)';
-        case 'phobos':
-          return 'blur(' + (percents * 3 / 100) + 'px)';
-        case 'heat':
-          return 'brightness(' + (percents * 3 / 100) + 'px)';
-        // case 'none':
-        //   return '';
-        default:
-          return '';
-      }
+      lineValue.style.width = pinHandle.style.left;
     };
 
     var onMouseUp = function (upEvt) {
@@ -79,33 +72,36 @@
     }
   };
 
-  // Выбор фильтра для фото
-  effectsRadioArray.forEach(function (element) { // выполняет указанную функцию один раз для каждого элемента в массиве
+  filterHandler();
+
+  effectsRadioArray.forEach(function (element) {
     element.addEventListener('click', function (evt) {
-      imageUploadPreview.className = '';
-      imageUploadPreview.classList.add('effects__preview--' + evt.target.value);
       currentEffect = evt.target.value;
       filterHandler();
+      imageUploadPreview.className = '';
+      imageUploadPreview.classList.add('effects__preview--' + currentEffect);
       pinHandle.style.left = FILTER_DEFAULT_VALUE + '%';
+      lineValue.style.width = FILTER_DEFAULT_VALUE + '%';
+      percents = FILTER_DEFAULT_VALUE;
+      imageUploadPreview.style.filter = getEffect(currentEffect, percents);
     });
   });
 
-  // Масштаб фотографии
-  scaleControlValue.value = MAX_VALUE + '%';
-
   var setImageScale = function (scale) {
+    scaleControlValue.setAttribute('value', scale + '%');
     imageUploadPreview.style.transform = 'scale(' + scale / 100 + ')';
   };
-
-  setImageScale(MAX_VALUE);
 
   var onClickScale = function (vector) {
     var value = parseInt(scaleControlValue.value, 10);
     var futureValue = value + vector * STEP;
-    if (futureValue >= MIN_VALUE && futureValue <= MAX_VALUE) {
-      scaleControlValue.value = futureValue + '%';
+    if (futureValue >= ValueType.MIN_VALUE && futureValue <= ValueType.MAX_VALUE) {
       setImageScale(futureValue);
     }
+  };
+
+  var clearScaleControl = function () {
+    setImageScale(ValueType.MAX_VALUE);
   };
 
   scaleControlSmaller.addEventListener('click', function () {
@@ -115,5 +111,7 @@
   scaleControlBigger.addEventListener('click', function () {
     onClickScale(1);
   });
+
+  window.clearScaleControl = clearScaleControl;
 
 })();

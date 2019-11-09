@@ -51,7 +51,7 @@
     });
 
 
-    xhr.timeout = 10000; // 10s
+    xhr.timeout = 10000;
     xhr.open('POST', URL_POST);
     xhr.send(data);
   };

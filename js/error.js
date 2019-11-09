@@ -3,7 +3,6 @@
 (function () {
 
   window.showError = function (text, onTryAgainBtnClick) {
-  // Блок: Сообщение с ошибкой загрузки изображения
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var errorPopup = errorTemplate.cloneNode(true);
     var errorPopupTitle = errorPopup.querySelector('.error__title');
