@@ -1,12 +1,14 @@
 'use strict';
 
 (function () {
+
   var uploadFileElement = document.querySelector('.img-upload__input');
   var uploadPopupElement = document.querySelector('.img-upload__overlay');
   var uploadPopupCloseElement = document.querySelector('.img-upload__cancel');
   var formElement = document.querySelector('.img-upload__form');
   var mainBlock = document.querySelector('.main');
   var successBtn;
+  var errorBtn;
 
   var ErrorMessage = {
     HASHTAG_SIMBOL: 'Хэш-тег начинается с символа # (решётка)',
@@ -42,15 +44,13 @@
   });
 
   var onFormEscPress = function (evt) {
-    if (evt.keyCode === window.util.ESC_KEY_CODE) {
-      closeForm();
-    }
+    window.util.isEscPressed(evt, closeForm);
   };
 
   var onFieldFocus = function (evt) {
-    if (evt.keyCode === window.util.ESC_KEY_CODE) {
+    window.util.isEscPressed(evt, function () {
       evt.stopPropagation();
-    }
+    });
   };
 
   uploadPopupCloseElement.addEventListener('click', function () {
@@ -123,25 +123,21 @@
     var section = successTemplate.cloneNode(true);
     fragment.appendChild(section);
     mainBlock.appendChild(fragment);
-
     successBtn = mainBlock.querySelector('.success__button');
     successBtn.addEventListener('click', cleanSuccessMessage);
     mainBlock.addEventListener('click', cleanSuccessMessage);
     document.addEventListener('keydown', onSuccessMessaEscPress);
   };
 
-  var cleanSuccessMessage = function (evt) {
-    evt.stopPropagation();
-    var SuccessMessagPopup = mainBlock.querySelector('.success');
-    mainBlock.removeChild(SuccessMessagPopup);
+  var cleanSuccessMessage = function () {
+    var successMessagPopup = mainBlock.querySelector('.success');
+    mainBlock.removeChild(successMessagPopup);
     successBtn.removeEventListener('click', cleanSuccessMessage);
     mainBlock.removeEventListener('click', cleanSuccessMessage);
   };
 
   var onSuccessMessaEscPress = function (evt) {
-    if (evt.keyCode === window.util.ESC_KEY_CODE) {
-      cleanSuccessMessage();
-    }
+    window.util.isEscPressed(evt, cleanSuccessMessage);
   };
 
   var createErrorMessage = function () {
@@ -150,22 +146,23 @@
     var section = ErrorTemplate.cloneNode(true);
     fragment.appendChild(section);
     mainBlock.appendChild(fragment);
-
-    var errorBtn = mainBlock.querySelector('.error__button');
+    errorBtn = mainBlock.querySelector('.error__button');
     errorBtn.addEventListener('click', cleanErrorMessage);
     mainBlock.addEventListener('click', cleanErrorMessage);
-    document.addEventListener('keydown', errorMessaEscPress);
+    document.addEventListener('keydown', errorMessageEscPress);
   };
 
   var cleanErrorMessage = function () {
-    var errorMessagPopup = mainBlock.querySelector('.error');
-    mainBlock.removeChild(errorMessagPopup);
+    var errorMessagePopup = mainBlock.querySelector('.error');
+    mainBlock.removeChild(errorMessagePopup);
+    errorBtn.removeEventListener('click', cleanErrorMessage);
+    mainBlock.removeEventListener('click', cleanErrorMessage);
+    document.removeEventListener('keydown', errorMessageEscPress);
+
   };
 
-  var errorMessaEscPress = function (evt) {
-    if (evt.keyCode === window.util.ESC_KEY_CODE) {
-      cleanErrorMessage();
-    }
+  var errorMessageEscPress = function (evt) {
+    window.util.isEscPressed(evt, cleanErrorMessage);
   };
 
 })();

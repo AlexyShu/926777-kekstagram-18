@@ -2,6 +2,7 @@
 
 (function () {
 
+  var ELEMENTS = 5;
   var bigPhoto = document.querySelector('.big-picture');
   var photoWrapper = document.querySelector('.big-picture__img img');
   var photoLikes = document.querySelector('.likes-count');
@@ -13,8 +14,6 @@
   var bigPhotoCancel = bigPhoto.querySelector('.big-picture__cancel');
   var commentsBtnClicks;
   var currentPhoto = null;
-  var ELEMENTS = 5;
-
 
   var openPhoto = function (photo) {
     return function () {
@@ -68,15 +67,11 @@
   };
 
   var onPressEscBigPhoto = function (evt) {
-    if (evt.keyCode === window.util.ESC_KEY_CODE) {
-      closeBigPhoto();
-    }
+    window.util.isEscPressed(evt, closeBigPhoto);
   };
 
   var onEnterPress = function (evt) {
-    if (evt.keyCode === window.util.ENTER_KEY_CODE) {
-      openPhoto();
-    }
+    window.util.isEnterPressed(evt, openPhoto);
   };
 
   bigPhotoCancel.addEventListener('click', onCloseBigPhoto);

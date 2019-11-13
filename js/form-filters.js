@@ -1,32 +1,33 @@
 'use strict';
 
 (function () {
+
+  var FILTER_DEFAULT_VALUE = 100;
+  var STEP = 25;
   var pinHandle = document.querySelector('.effect-level__pin');
   var effectLevelLine = document.querySelector('.effect-level__line');
   var effectLevelBlock = document.querySelector('.img-upload__effect-level ');
   var imageUploadPreview = document.querySelector('.img-upload__preview img');
   var effectsRadioArray = document.querySelectorAll('.effects__radio');
   var lineValue = document.querySelector('.effect-level__depth');
-  var FILTER_DEFAULT_VALUE = 100;
   var currentEffect = 'none';
   var percents;
   var scaleControlValue = document.querySelector('.scale__control--value');
   var scaleControlSmaller = document.querySelector('.scale__control--smaller');
   var scaleControlBigger = document.querySelector('.scale__control--bigger');
-  var STEP = 25;
 
   var ValueType = {
     MAX_VALUE: 100,
     MIN_VALUE: 25
   };
 
-  var getEffect = function (value, _percents) {
+  var getEffect = function (value, percent) {
     var map = {
-      'chrome': 'grayscale(' + (_percents * 1 / 100) + ')',
-      'sepia': 'sepia(' + (_percents * 1 / 100) + ')',
-      'marvin': 'invert(' + (_percents * 100 / 100) + '%)',
-      'phobos': 'blur(' + (_percents * 3 / 100) + 'px)',
-      'heat': 'brightness(' + (_percents * 3 / 100) + ')',
+      'chrome': 'grayscale(' + (percent * 1 / 100) + ')',
+      'sepia': 'sepia(' + (percent * 1 / 100) + ')',
+      'marvin': 'invert(' + (percent * 100 / 100) + '%)',
+      'phobos': 'blur(' + (percent * 3 / 100) + 'px)',
+      'heat': 'brightness(' + (percent * 3 / 100) + ')',
       'none': '',
     };
     var result = map[value];

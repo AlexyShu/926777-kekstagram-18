@@ -3,7 +3,6 @@
 (function () {
 
   var BTN_CLASS = 'img-filters__button';
-  // фильтр фото
   var imgFilters = document.querySelector('.img-filters');
   var filterForm = document.querySelector('.img-filters__form');
   var photos = [];
@@ -44,13 +43,13 @@
   var debouncedFilter = window.debounce(filterPhotos);
 
   var shuffle = function (pics) {
-    var resultArr = [];
+    var resalts = [];
     for (var i = 0; i < 10; i++) {
       var randomIndex = window.util.getRandomNumber(0, pics.length - 1);
       var randomItem = pics.splice(randomIndex, 1)[0];
-      resultArr.push(randomItem);
+      resalts.push(randomItem);
     }
-    return resultArr;
+    return resalts;
   };
 
   window.showFilters = showFilters;
