@@ -127,6 +127,7 @@
     successBtn.addEventListener('click', cleanSuccessMessage);
     mainBlock.addEventListener('click', cleanSuccessMessage);
     document.addEventListener('keydown', onSuccessMessaEscPress);
+    formElement.reset();
   };
 
   var cleanSuccessMessage = function () {
@@ -158,7 +159,6 @@
     errorBtn.removeEventListener('click', cleanErrorMessage);
     mainBlock.removeEventListener('click', cleanErrorMessage);
     document.removeEventListener('keydown', errorMessageEscPress);
-
   };
 
   var errorMessageEscPress = function (evt) {
