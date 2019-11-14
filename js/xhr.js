@@ -39,6 +39,7 @@
     var xhr = createRequest(onLoad, onError);
     xhr.open('POST', URL_POST);
     xhr.send(data);
+    window.fileChooser.value = '';
   };
 
   window.xhr = {

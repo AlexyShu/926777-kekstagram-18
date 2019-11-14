@@ -22,4 +22,6 @@
     }
   });
 
+  window.fileChooser = fileChooser;
+
 })();

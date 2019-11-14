@@ -2,7 +2,7 @@
 
 (function () {
 
-  var ELEMENTS = 5;
+  var ELEMENTS_COUNT = 5;
   var bigPhoto = document.querySelector('.big-picture');
   var photoWrapper = document.querySelector('.big-picture__img img');
   var photoLikes = document.querySelector('.likes-count');
@@ -38,7 +38,7 @@
   };
 
   var renderComment = function (photo) {
-    var maxIndex = (commentsBtnClicks + 1) * ELEMENTS;
+    var maxIndex = (commentsBtnClicks + 1) * ELEMENTS_COUNT;
     if (maxIndex > photo.comments.length - 1) {
       maxIndex = photo.comments.length;
       commentsLoader.classList.add('hidden');

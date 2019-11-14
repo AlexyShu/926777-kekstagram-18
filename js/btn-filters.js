@@ -43,13 +43,13 @@
   var debouncedFilter = window.debounce(filterPhotos);
 
   var shuffle = function (pics) {
-    var resalts = [];
+    var elements = [];
     for (var i = 0; i < 10; i++) {
       var randomIndex = window.util.getRandomNumber(0, pics.length - 1);
       var randomItem = pics.splice(randomIndex, 1)[0];
-      resalts.push(randomItem);
+      elements.push(randomItem);
     }
-    return resalts;
+    return elements;
   };
 
   window.showFilters = showFilters;
