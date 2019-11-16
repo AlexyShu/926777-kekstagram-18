@@ -37,10 +37,10 @@
         });
         break;
     }
-    window.renderPhotos(filteredPhotos);
+    window.renderPic.renderPhotos(filteredPhotos);
   };
 
-  var debouncedFilter = window.debounce(filterPhotos);
+  var debouncedFilter = window.debounce.removeDebounce(filterPhotos);
 
   var shuffle = function (pics) {
     var elements = [];
@@ -52,6 +52,8 @@
     return elements;
   };
 
-  window.showFilters = showFilters;
+  window.btnFilters = {
+    showFilters: showFilters
+  };
 
 })();

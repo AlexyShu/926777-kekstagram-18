@@ -84,6 +84,8 @@
     renderComment(currentPhoto);
   });
 
-  window.openPhoto = openPhoto;
+  window.showPhoto = {
+    openPhoto: openPhoto
+  };
 
 })();

@@ -16,12 +16,10 @@
       var reader = new FileReader();
       reader.addEventListener('load', function () {
         imgUploadPreviewElement.src = reader.result;
-        window.clearScaleControl();
+        window.formFilters.clearScaleControl();
       });
       reader.readAsDataURL(file);
     }
   });
-
-  window.fileChooser = fileChooser;
 
 })();

@@ -32,6 +32,7 @@
   var closeForm = function () {
     uploadPopupElement.classList.add('hidden');
     document.removeEventListener('keydown', onFormEscPress);
+    window.formFilters.restartStyle();
   };
 
   var openForm = function () {

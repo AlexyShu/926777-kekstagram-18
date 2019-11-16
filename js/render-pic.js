@@ -5,7 +5,6 @@
   var renderPhotos = function (photos) {
     var picturesBlock = document.querySelector('.pictures');
     var photosTemplate = document.querySelector('#picture').content.querySelector('.picture');
-    window.photosTemplate = photosTemplate;
     var photosCurrent = picturesBlock.querySelectorAll('.picture');
     for (var j = 0; j < photosCurrent.length; j++) {
       picturesBlock.removeChild(photosCurrent[j]);
@@ -17,12 +16,14 @@
       element.querySelector('.picture__img').src = photo.url;
       element.querySelector('.picture__likes').textContent = photo.likes;
       element.querySelector('.picture__comments').textContent = photo.comments.length;
-      element.addEventListener('click', window.openPhoto(photo));
+      element.addEventListener('click', window.showPhoto.openPhoto(photo));
       fragment.appendChild(element);
     }
     picturesBlock.appendChild(fragment);
   };
 
-  window.renderPhotos = renderPhotos;
+  window.renderPic = {
+    renderPhotos: renderPhotos
+  };
 
 })();
